@@ -34,6 +34,18 @@ Before running the application, ensure you have:
    - Navigate to API Keys section
    - Generate a new API key (free tier allows 1,000 calls/day)
 
+## 🔑 How to Get a Free API Key
+
+1. **Sign Up**: Create a free account at [OpenWeatherMap](https://home.openweathermap.org/users/sign_up)
+2. **Verify Email**: Check your inbox and verify your email address
+3. **Get Key**:
+   - Go to your account dashboard
+   - Click on the **"API keys"** tab
+   - You'll see a default key generated for you (or create a new one)
+4. **Copy & Use**: Copy the API key string and paste it into the Weather App when prompted
+
+> **Note**: A new API key may take 10-15 minutes to become active. If you get an error initially, please wait a few minutes.
+
 ## 🚀 Installation
 
 ### Step 1: Clone or Download

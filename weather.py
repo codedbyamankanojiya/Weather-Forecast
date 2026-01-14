@@ -12,13 +12,25 @@ class WeatherApp(QWidget):
         self.api_key = None
         self.temp_unit = 'F'  # Default to Fahrenheit
         self.current_temp_k = None  # Store temperature in Kelvin
+        self.current_feels_like_k = None  # Store feels like temperature
+        self.current_city = ""  # Store current city name
+        
+        # UI Components
         self.city_label = QLabel("Enter city name: ", self)
         self.city_input = QLineEdit(self)
+        self.city_input.setPlaceholderText("e.g., London, Tokyo, Mumbai")
         self.get_weather_button = QPushButton("Get Weather", self)
         self.unit_toggle_button = QPushButton("Switch to °C", self)
+        
+        # Weather display labels
+        self.city_name_label = QLabel(self)
         self.temperature_label = QLabel(self)
+        self.feels_like_label = QLabel(self)
         self.emoji_label = QLabel(self)
         self.description_label = QLabel(self)
+        self.humidity_label = QLabel(self)
+        self.wind_label = QLabel(self)
+        
         self.initUI()
         self.load_config()
 
@@ -79,35 +91,54 @@ class WeatherApp(QWidget):
 
     def initUI(self):
         self.setWindowTitle("🌤️ Weather App")
-        self.setMinimumSize(500, 600)
+        self.setMinimumSize(550, 750)
 
         vbox = QVBoxLayout()
-        vbox.setSpacing(15)
+        vbox.setSpacing(12)
         vbox.setContentsMargins(30, 30, 30, 30)
 
+        # Input section
         vbox.addWidget(self.city_label)
         vbox.addWidget(self.city_input)
         vbox.addWidget(self.get_weather_button)
         vbox.addWidget(self.unit_toggle_button)
-        vbox.addWidget(self.temperature_label)
+        
+        # Weather display section
+        vbox.addSpacing(10)
+        vbox.addWidget(self.city_name_label)
         vbox.addWidget(self.emoji_label)
+        vbox.addWidget(self.temperature_label)
+        vbox.addWidget(self.feels_like_label)
         vbox.addWidget(self.description_label)
+        vbox.addSpacing(10)
+        vbox.addWidget(self.humidity_label)
+        vbox.addWidget(self.wind_label)
         vbox.addStretch()
 
         self.setLayout(vbox)
 
+        # Set alignments
         self.city_label.setAlignment(Qt.AlignCenter)
         self.city_input.setAlignment(Qt.AlignCenter)
+        self.city_name_label.setAlignment(Qt.AlignCenter)
         self.temperature_label.setAlignment(Qt.AlignCenter)
+        self.feels_like_label.setAlignment(Qt.AlignCenter)
         self.emoji_label.setAlignment(Qt.AlignCenter)
         self.description_label.setAlignment(Qt.AlignCenter)
+        self.humidity_label.setAlignment(Qt.AlignCenter)
+        self.wind_label.setAlignment(Qt.AlignCenter)
 
+        # Set object names for styling
         self.city_label.setObjectName("city_label")
         self.city_input.setObjectName("city_input")
         self.get_weather_button.setObjectName("get_weather_button")
+        self.city_name_label.setObjectName("city_name_label")
         self.temperature_label.setObjectName("temperature_label")
+        self.feels_like_label.setObjectName("feels_like_label")
         self.emoji_label.setObjectName("emoji_label")
         self.description_label.setObjectName("description_label")
+        self.humidity_label.setObjectName("humidity_label")
+        self.wind_label.setObjectName("wind_label")
 
         self.setStyleSheet("""
             QWidget {
@@ -169,16 +200,45 @@ class WeatherApp(QWidget):
                 font-size: 100px;
                 font-family: 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
             }
+            QLabel#city_name_label{
+                font-size: 28px;
+                font-weight: 600;
+                color: #2b6cb0;
+                margin-top: 15px;
+                margin-bottom: 5px;
+            }
             QLabel#description_label{
-                font-size: 36px;
+                font-size: 28px;
                 color: #4a5568;
                 text-transform: capitalize;
+                margin-bottom: 10px;
+            }
+            QLabel#feels_like_label{
+                font-size: 20px;
+                color: #718096;
+                margin-top: 5px;
+            }
+            QLabel#humidity_label, QLabel#wind_label{
+                font-size: 22px;
+                color: #4a5568;
+                padding: 8px;
+                background-color: rgba(255, 255, 255, 0.6);
+                border-radius: 6px;
+                margin: 3px;
             }
         """)
 
+        # Connect signals
         self.get_weather_button.clicked.connect(self.get_weather)
         self.unit_toggle_button.clicked.connect(self.toggle_temperature_unit)
-        self.unit_toggle_button.hide()  # Hide until weather is fetched
+        self.city_input.returnPressed.connect(self.get_weather)  # Enter key to search
+        
+        # Hide elements until weather is fetched
+        self.unit_toggle_button.hide()
+        self.city_name_label.hide()
+        self.feels_like_label.hide()
+        self.humidity_label.hide()
+        self.wind_label.hide()
 
     def get_weather(self):
         if not self.api_key:
@@ -234,16 +294,43 @@ class WeatherApp(QWidget):
         self.emoji_label.clear()
         self.description_label.clear()
         self.unit_toggle_button.hide()
+        self.city_name_label.hide()
+        self.feels_like_label.hide()
+        self.humidity_label.hide()
+        self.wind_label.hide()
 
     def display_weather(self, data):
         self.temperature_label.setStyleSheet("font-size: 72px; font-weight: bold; color: #2d3748; margin-top: 20px;")
+        
+        # Extract weather data
         self.current_temp_k = data["main"]["temp"]
+        self.current_feels_like_k = data["main"]["feels_like"]
+        self.current_city = data["name"]
+        country = data["sys"]["country"]
         weather_id = data["weather"][0]["id"]
         weather_description = data["weather"][0]["description"]
-
+        humidity = data["main"]["humidity"]
+        wind_speed = data["wind"]["speed"]  # in m/s
+        
+        # Display city name
+        self.city_name_label.setText(f"{self.current_city}, {country}")
+        self.city_name_label.show()
+        
+        # Display main weather info
         self.update_temperature_display()
         self.emoji_label.setText(self.get_weather_emoji(weather_id))
         self.description_label.setText(weather_description)
+        
+        # Display additional info
+        self.humidity_label.setText(f"💧 Humidity: {humidity}%")
+        self.humidity_label.show()
+        
+        # Convert wind speed from m/s to km/h
+        wind_kmh = wind_speed * 3.6
+        self.wind_label.setText(f"💨 Wind: {wind_kmh:.1f} km/h")
+        self.wind_label.show()
+        
+        # Show toggle button
         self.unit_toggle_button.show()
     
     def update_temperature_display(self):
@@ -253,10 +340,16 @@ class WeatherApp(QWidget):
         
         if self.temp_unit == 'F':
             temp = (self.current_temp_k * 9/5) - 459.67
+            feels_like = (self.current_feels_like_k * 9/5) - 459.67
             self.temperature_label.setText(f"{temp:.0f}°F")
+            self.feels_like_label.setText(f"Feels like {feels_like:.0f}°F")
         else:  # Celsius
             temp = self.current_temp_k - 273.15
+            feels_like = self.current_feels_like_k - 273.15
             self.temperature_label.setText(f"{temp:.0f}°C")
+            self.feels_like_label.setText(f"Feels like {feels_like:.0f}°C")
+        
+        self.feels_like_label.show()
     
     def toggle_temperature_unit(self):
         """Toggle between Fahrenheit and Celsius."""
