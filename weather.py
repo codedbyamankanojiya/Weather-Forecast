@@ -2,9 +2,31 @@ import sys
 import os
 import json
 import requests
-from PyQt5.QtWidgets import (QApplication, QWidget, QLabel,
-                                                       QLineEdit, QPushButton, QVBoxLayout, QInputDialog, QMessageBox)
-from PyQt5.QtCore import Qt
+
+try:
+    from PySide6.QtWidgets import (
+        QApplication,
+        QWidget,
+        QLabel,
+        QLineEdit,
+        QPushButton,
+        QVBoxLayout,
+        QInputDialog,
+        QMessageBox,
+    )
+    from PySide6.QtCore import Qt
+except ImportError:
+    from PyQt5.QtWidgets import (
+        QApplication,
+        QWidget,
+        QLabel,
+        QLineEdit,
+        QPushButton,
+        QVBoxLayout,
+        QInputDialog,
+        QMessageBox,
+    )
+    from PyQt5.QtCore import Qt
 
 class WeatherApp(QWidget):
     def __init__(self):
@@ -392,4 +414,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     weather_app = WeatherApp()
     weather_app.show()
-    sys.exit(app.exec_())
+    exit_code = app.exec() if hasattr(app, "exec") else app.exec_()
+    sys.exit(exit_code)
