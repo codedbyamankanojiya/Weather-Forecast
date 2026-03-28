@@ -1,9 +1,9 @@
-# 🌤️ Weather App
+# 🌤️ IconicSky
 
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![PyQt5](https://img.shields.io/badge/PyQt5-41CD52?style=for-the-badge&logo=qt&logoColor=white)
 
-A modern, user-friendly desktop weather application built with Python and PyQt5. Get real-time weather information for any city worldwide with an intuitive graphical interface.
+A modern, user-friendly desktop weather application built with Python and PyQt5. Get real-time weather information for any city worldwide with an intuitive graphical interface. IconicSky provides a beautiful, iconic weather experience with comprehensive features and an elegant design.
 
 ## ✨ Features
 
@@ -42,7 +42,7 @@ Before running the application, ensure you have:
    - Go to your account dashboard
    - Click on the **"API keys"** tab
    - You'll see a default key generated for you (or create a new one)
-4. **Copy & Use**: Copy the API key string and paste it into the Weather App when prompted
+4. **Copy & Use**: Copy the API key string and paste it into IconicSky when prompted
 
 > **Note**: A new API key may take 10-15 minutes to become active. If you get an error initially, please wait a few minutes.
 
@@ -53,10 +53,10 @@ Before running the application, ensure you have:
 ```bash
 # If using Git
 git clone <repository-url>
-cd "Python projects"
+cd IconicSky
 
 # Or simply navigate to the directory
-cd "d:\Projects\Python projects"
+cd "d:\Projects\Python projects\IconicSky"
 ```
 
 ### Step 2: Create Virtual Environment (Recommended)
@@ -95,7 +95,7 @@ python weather.py
 
 ### Using the App
 
-1. Type a city name in the input field (e.g., "London", "New York", "Tokyo")
+1. Type a city name in the input field (e.g., "Mumbai", "London", "New York", "Tokyo")
 2. Click the **"Get Weather"** button
 3. View the results:
    - Temperature in Fahrenheit
@@ -105,17 +105,17 @@ python weather.py
 ## 🎨 Weather Emoji Guide
 
 | Emoji | Weather Condition |
-|-------|------------------|
-| ⛈ | Thunderstorm |
-| 🌦 | Drizzle |
-| 🌧 | Rain |
-| ❄ | Snow |
-| 🌫 | Fog/Mist |
-| 🌋 | Volcanic Ash |
-| 💨 | Squalls |
-| 🌪 | Tornado |
-| ☀ | Clear Sky |
-| ☁ | Clouds |
+|-------|-------------------|
+| ⛈    | Thunderstorm      |
+| 🌦    | Drizzle           |
+| 🌧    | Rain              |
+| ❄    | Snow              |
+| 🌫    | Fog/Mist          |
+| 🌋   | Volcanic Ash      |
+| 💨   | Squalls           |
+| 🌪    | Tornado           |
+| ☀    | Clear Sky         |
+| ☁    | Clouds            |
 
 ## 🔧 Troubleshooting
 
@@ -178,4 +178,6 @@ Contributions, issues, and feature requests are welcome!
 
 <p align="center">
   Made with ❤️ using Python & PyQt5 By Aman Kanojiya
+  
+  **IconicSky** - Your iconic weather companion
 </p>
